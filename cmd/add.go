@@ -20,6 +20,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	"github.com/wambug/Sites/db"
 )
 
 // addCmd represents the add command
@@ -31,8 +32,16 @@ var addCmd = &cobra.Command{
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		site := args[0]
+		_, err := db.AddSite(site, duration)
+		if err != nil {
+			panic(err)
+		}
 		fmt.Printf("added : %s and will open %s later\n", site, duration)
-		
+
+		err = db.DeleteSite(duration)
+		if err != nil {
+			fmt.Println("something went wrong", err.Error())
+		}
 	},
 }
 

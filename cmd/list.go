@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	"github.com/wambug/Sites/db"
 )
 
 // listCmd represents the list command
@@ -27,7 +28,15 @@ var listCmd = &cobra.Command{
 	Short: "Lists all the webpages and time remaining to be launched on the browser",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
+		sites, err := db.AllSites()
+		if err != nil {
+			fmt.Println("Something went wrong:", err.Error())
+			return
+		}
+		for k, v := range sites {
+			fmt.Printf("%d.%s\n", k, v)
+
+		}
 	},
 }
 

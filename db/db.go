@@ -1,8 +1,8 @@
 package db
 
 import (
-	"fmt"
 	"log"
+	"os/exec"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -10,23 +10,22 @@ import (
 
 type Sites struct {
 	Duration time.Duration
-	Url      string
+	url      string
 }
 
 var siteBucket = []byte("sites")
 var db *bolt.DB
 
-func Init(path string) []byte {
+func Init(path string) error {
 	var err error
 	db, err = bolt.Open(path, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		log.Fatal(err)
 	}
-	db.Update(func(t *bolt.Tx) error {
+	return db.Update(func(t *bolt.Tx) error {
 		_, err := t.CreateBucketIfNotExists(siteBucket)
 		return err
 	})
-	return siteBucket
 }
 
 func AddSite(url string, d time.Duration) (time.Duration, error) {
@@ -51,10 +50,10 @@ func AllSites() ([]Sites, error) {
 		b := t.Bucket(siteBucket)
 		c := b.Cursor()
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			fmt.Printf("key=%s, value=%s\n", k, v)
+			//fmt.Printf("key=%s, value=%s\n", k, v)
 			sites = append(sites, Sites{
 				Duration: btd(k),
-				Url:      string(v),
+				url:      string(v),
 			})
 		}
 		return nil
@@ -66,10 +65,24 @@ func AllSites() ([]Sites, error) {
 }
 
 func DeleteSite(key time.Duration) error {
+	var sites []Sites
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(siteBucket)
-		return b.Delete(dtb(key))
+		time.AfterFunc(key, func() {
+			for _, v := range sites {
+				cmd := exec.Command("firefox", v.url)
+
+				err := cmd.Run()
+
+				if err != nil {
+					log.Fatal(err)
+				}
+			}
+			b.Delete(dtb(key))
+		})
+		return nil
 	})
+
 }
 
 // function to change duration into byte of string format
@@ -80,7 +93,7 @@ func dtb(d time.Duration) []byte {
 //Function to change byte of string format into time.Duration
 func btd(x []byte) time.Duration {
 	v := string(x)
-	fmt.Println(v)
+	//fmt.Println(v)
 	u, _ := time.ParseDuration(v)
 	return u
 }
