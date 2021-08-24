@@ -13,11 +13,11 @@ Usage:
   Sites [command]
 
 Available Commands:
-  1. add         Adds the site
-  2. completion  generate the autocompletion script for the specified shell
-  3. edit        Edit the site and time to be Launched
-  4. help        Help about any command
-  5. list        Lists all the webpages and time remaining to be launched on the browser
+  1. add    -     Adds the site
+  2. completion - generate the autocompletion script for the specified shell
+  3. edit  -      Edit the site and time to be Launched
+  4. help  -      Help about any command
+  5. list   -     Lists all the webpages and time remaining to be launched on the browser
 
 Flags:
   -h, --help   help for Sites
