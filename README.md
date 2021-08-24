@@ -13,14 +13,15 @@ Usage:
   Sites [command]
 
 Available Commands:
-  add         Adds the site
-  completion  generate the autocompletion script for the specified shell
-  edit        Edit the site and time to be Launched
-  help        Help about any command
-  list        Lists all the webpages and time remaining to be launched on the browser
+  1. add         Adds the site
+  2. completion  generate the autocompletion script for the specified shell
+  3. edit        Edit the site and time to be Launched
+  4. help        Help about any command
+  5. list        Lists all the webpages and time remaining to be launched on the browser
 
 Flags:
   -h, --help   help for Sites
 
 Use "Sites [command] --help" for more information about a command.
 
+Few changes to be made so as to enable the cli to work ......
