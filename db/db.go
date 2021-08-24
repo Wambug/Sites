@@ -17,7 +17,8 @@ var siteBucket = []byte("sites")
 var db *bolt.DB
 
 func Init(path string) []byte {
-	db, err := bolt.Open(path, 0600, &bolt.Options{Timeout: 1 * time.Second})
+	var err error
+	db, err = bolt.Open(path, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		log.Fatal(err)
 	}
