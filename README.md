@@ -1,6 +1,6 @@
 # Sites
 Sites is a cli library which stores urls and time it will be launched on the browser
-# Technologies used:
+## Technologies used:
 1. BOLTDB
 2. COBRA CLI
 
