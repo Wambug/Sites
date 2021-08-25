@@ -23,6 +23,7 @@ Flags:
   -h, --help   help for Sites
 
 Use "Sites [command] --help" for more information about a command.
+![](https://asciinema.org/a/1tMPaRSJ7UsTYf1wgRbDjsb2x)
 
 #### bug fixes & some changes
 
