@@ -38,10 +38,6 @@ var addCmd = &cobra.Command{
 		}
 		fmt.Printf("added : %s and will open %s later\n", site, duration)
 
-		err = db.DeleteSite(duration)
-		if err != nil {
-			fmt.Println("something went wrong", err.Error())
-		}
 	},
 }
 

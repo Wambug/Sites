@@ -1,6 +1,7 @@
 package db
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
 	"time"
@@ -10,7 +11,7 @@ import (
 
 type Sites struct {
 	Duration time.Duration
-	url      string
+	Url      string
 }
 
 var siteBucket = []byte("sites")
@@ -53,7 +54,7 @@ func AllSites() ([]Sites, error) {
 			//fmt.Printf("key=%s, value=%s\n", k, v)
 			sites = append(sites, Sites{
 				Duration: btd(k),
-				url:      string(v),
+				Url:      string(v),
 			})
 		}
 		return nil
@@ -65,23 +66,30 @@ func AllSites() ([]Sites, error) {
 }
 
 func DeleteSite(key time.Duration) error {
-	var sites []Sites
+	//var sites []Sites
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(siteBucket)
-		time.AfterFunc(key, func() {
-			for _, v := range sites {
-				cmd := exec.Command("firefox", v.url)
+		//b.Delete(dtb(key))
 
-				err := cmd.Run()
+		time.AfterFunc(key, func() { iterate() })
+		b.Delete(dtb(key))
+		//fmt.Println(v)
+		time.Sleep(key)
 
-				if err != nil {
-					log.Fatal(err)
-				}
-			}
-			b.Delete(dtb(key))
-		})
 		return nil
 	})
+
+}
+func iterate() {
+	v, _ := AllSites()
+	for _, i := range v {
+		cmd := exec.Command("firefox", i.Url)
+		fmt.Printf("Opening the browser......%s, %s\n", i.Url, i.Duration)
+		err := cmd.Run()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 
 }
 
