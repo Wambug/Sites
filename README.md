@@ -24,4 +24,5 @@ Flags:
 
 Use "Sites [command] --help" for more information about a command.
 
-Few changes to be made so as to enable the cli to work ......
+Few changes to be made so as to enable the cli to work ......:
+-Fix the few bugs and add the delete command
