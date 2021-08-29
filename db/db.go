@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os/exec"
+	"sync"
 	"time"
 
 	"github.com/boltdb/bolt"
@@ -65,32 +66,29 @@ func AllSites() ([]Sites, error) {
 	return sites, nil
 }
 
-func DeleteSite(key time.Duration) error {
-	//var sites []Sites
+func DeleteSite(site *Sites) error {
+	var wg sync.WaitGroup
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(siteBucket)
-		//b.Delete(dtb(key))
+		wg.Add(1)
+		time.AfterFunc(site.Duration, func() {
+			err := iterate(site)
+			defer wg.Done()
+			if err != nil {
+				fmt.Println("error occurred opening url, got:", err)
+				return
+			}
+		})
+		wg.Wait()
 
-		time.AfterFunc(key, func() { iterate() })
-		b.Delete(dtb(key))
-		//fmt.Println(v)
-		time.Sleep(key)
-
-		return nil
+		return b.Delete(dtb(site.Duration))
 	})
 
 }
-func iterate() {
-	v, _ := AllSites()
-	for _, i := range v {
-		cmd := exec.Command("firefox", i.Url)
-		fmt.Printf("Opening the browser......%s, %s\n", i.Url, i.Duration)
-		err := cmd.Run()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
+func iterate(site *Sites) error {
+	fmt.Printf("Opening the browser......%s, %s\n", site.Url, site.Duration)
 
+	return exec.Command("firefox", site.Url).Run()
 }
 
 // function to change duration into byte of string format

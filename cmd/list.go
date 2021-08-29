@@ -36,10 +36,20 @@ var listCmd = &cobra.Command{
 		for k, v := range sites {
 			fmt.Printf("%d. Site:%s Duration: %s\n", k, v.Url, v.Duration)
 		}
-		for _, v := range sites {
-			err = db.DeleteSite(v.Duration)
+		for {
+			sites, err = db.AllSites()
 			if err != nil {
-				fmt.Println("something went wrong", err.Error())
+				fmt.Println("Something went wrong:", err.Error())
+				return
+			}
+			if len(sites) == 0 {
+				break
+			}
+			for _, v := range sites {
+				err = db.DeleteSite(&v)
+				if err != nil {
+					fmt.Println("something went wrong", err.Error())
+				}
 			}
 		}
 	},

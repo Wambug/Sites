@@ -25,13 +25,9 @@ func TestAddsite(t *testing.T) {
 	fmt.Printf("wanted %s  got %s ", want, got)
 }
 
-var sites Sites
-
-func TestDeletesite(t *testing.T) {
-	sites.Url = "google.com"
-	u, _ := time.ParseDuration("1s")
-	x := DeleteSite(u)
-	want := ""
-	got := x
-	fmt.Printf("wanted %s  got %s ", want, got)
-}
+//func TestDeletesite(t *testing.T) {
+//	x := DeleteSite(&Sites{})
+//	want := ""
+//	got := x
+//	fmt.Printf("wanted %s  got %s ", want, got)
+//}
