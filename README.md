@@ -23,5 +23,10 @@ Flags:
   -h, --help   help for Sites
 
 Use "Sites [command] --help" for more information about a command.
+[![asciicast](https://asciinema.org/a/1tMPaRSJ7UsTYf1wgRbDjsb2x.svg)](https://asciinema.org/a/1tMPaRSJ7UsTYf1wgRbDjsb2x)
 
-Few changes to be made so as to enable the cli to work ......
+#### bug fixes & some changes
+
+-Few changes to be made so as to enable the cli to work ......
+
+-Fix the few bugs and add the delete command
